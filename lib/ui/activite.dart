@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:zando_id/model/categorie.dart';
 import 'package:zando_id/ui/success.dart';
 import 'package:zando_id/widgets/ButtonWANGI.dart';
+import 'package:zando_id/widgets/loading.dart';
 
 import 'informationPersonnelle.dart';
 
@@ -25,6 +26,7 @@ class Activite extends StatefulWidget {
 }
 
 class _ActiviteState extends State<Activite> {
+  bool _loading = false;
   TextEditingController adresseController = TextEditingController(); //good
   TextEditingController marcheController = TextEditingController(); //good
   TextEditingController articleController = TextEditingController(); //good
@@ -144,194 +146,204 @@ class _ActiviteState extends State<Activite> {
     // TODO: implement initState
     super.initState();
     _getPreferences();
-    getInfosPersonnel();
     recupCategorie();
+    getInfosPersonnel();
   }
 
   @override
   Widget build(BuildContext context) {
-    place();
     category();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Informations Activité"),
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.white,
-      key: key,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              //utilisateur connecter
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      "Utilisateur connecté : ",
-                      style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                      ),
+    place();
+    return _loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              title: Text("Informations Activité"),
+              centerTitle: true,
+            ),
+            backgroundColor: Colors.white,
+            key: key,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    //utilisateur connecter
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Utilisateur connecté : ",
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          widget.user == null || widget.user.isEmpty
+                              ? ''
+                              : widget.user,
+                          style: GoogleFonts.poppins(
+                            color: Colors.red,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    widget.user == null || widget.user.isEmpty
-                        ? ''
-                        : widget.user,
-                    style: GoogleFonts.poppins(
+
+                    Divider(
+                      height: 10,
+                    ),
+
+                    // categorie
+                    Row(
+                      children: [
+                        Text(
+                          "Catégorie",
+                          style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        DropdownButton(
+                            value: typeategorie,
+                            elevation: 10,
+                            items: listCategorie,
+                            hint: Text(
+                              'Sélectionnez la categorie',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                            ),
+                            onChanged: (value) {
+                              typeategorie = value.toString();
+                              setState(() {});
+                            }),
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    // Article (articleController)
+                    TextField(
+                      controller: articleController,
+                      decoration: InputDecoration(
+                          hintText: 'Article',
+                          labelText: 'Article',
+                          hintStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 1)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 1))),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    //type place
+                    Row(
+                      children: [
+                        Text(
+                          "Type place",
+                          style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        DropdownButton(
+                            value: typePlace,
+                            elevation: 20,
+                            items: listPlace,
+                            hint: Text(
+                              'Sélectionnez le type',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                            ),
+                            onChanged: (value) {
+                              typePlace = value;
+                              setState(() {});
+                            }),
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    //marché provisoire (marcheController)
+                    TextField(
+                      controller: marcheController,
+                      decoration: InputDecoration(
+                          hintText: 'Marche provisoire',
+                          labelText: 'Marche provisiore',
+                          hintStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 1)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 1))),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    // nom (nomController)
+                    TextField(
+                      controller: adresseController,
+                      decoration: InputDecoration(
+                          hintText: 'Adresse',
+                          labelText: 'Adresse',
+                          hintStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 1)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 1))),
+                    ),
+
+                    SizedBox(
+                      height: 30,
+                    ),
+
+                    // Bouton de validation
+                    ButtonWANGI(
+                      titre: 'Enregistrer',
                       color: Colors.green,
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
+                      onPressed: () {
+                        authentificaion(context);
+                      },
                     ),
-                  )
-                ],
+                  ],
+                ),
               ),
-
-              Divider(
-                height: 10,
-              ),
-
-              // categorie
-              Row(
-                children: [
-                  Text(
-                    "Catégorie",
-                    style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20.0,
-                  ),
-                  DropdownButton(
-                      value: typeategorie,
-                      elevation: 10,
-                      items: listCategorie,
-                      hint: Text(
-                        'Sélectionnez la categorie',
-                        style: TextStyle(color: Colors.black, fontSize: 12),
-                      ),
-                      onChanged: (value) {
-                        typeategorie = value.toString();
-                        setState(() {});
-                      }),
-                ],
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              // Article (articleController)
-              TextField(
-                controller: articleController,
-                decoration: InputDecoration(
-                    hintText: 'Article',
-                    labelText: 'Article',
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.blue, width: 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1))),
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              //type place
-              Row(
-                children: [
-                  Text(
-                    "Type place",
-                    style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20.0,
-                  ),
-                  DropdownButton(
-                      value: typePlace,
-                      elevation: 20,
-                      items: listPlace,
-                      hint: Text(
-                        'Sélectionnez le type',
-                        style: TextStyle(color: Colors.black, fontSize: 12),
-                      ),
-                      onChanged: (value) {
-                        typePlace = value;
-                        setState(() {});
-                      }),
-                ],
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              //marché provisoire (marcheController)
-              TextField(
-                controller: marcheController,
-                decoration: InputDecoration(
-                    hintText: 'Marche provisoire',
-                    labelText: 'Marche provisiore',
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.blue, width: 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1))),
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              // nom (nomController)
-              TextField(
-                controller: adresseController,
-                decoration: InputDecoration(
-                    hintText: 'Adresse',
-                    labelText: 'Adresse',
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.blue, width: 1)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1))),
-              ),
-
-              SizedBox(
-                height: 30,
-              ),
-
-              // Bouton de validation
-              ButtonWANGI(
-                titre: 'Enregistrer',
-                color: Colors.green,
-                onPressed: () {
-                  authentificaion(context);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 
   void authentificaion(context) {
@@ -394,6 +406,9 @@ class _ActiviteState extends State<Activite> {
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       //S'il est connecter on vas vers l'API ici...
+      setState(() {
+        _loading = true;
+      });
       try {
         print(" ******  debut try   ****** ");
         final response = await http
@@ -447,7 +462,8 @@ class _ActiviteState extends State<Activite> {
                 context, MaterialPageRoute(builder: (context) => Success()));
 
             setState(() {
-              showSnackbar("Vendeur Enregistrer");
+              //showSnackbar("Vendeur Enregistrer");
+              bool _loading = false;
             });
           }
           //ici tu met la redirection en fonction de l'action qui vas suivre...

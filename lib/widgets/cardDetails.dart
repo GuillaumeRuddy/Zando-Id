@@ -7,7 +7,7 @@ Widget CardDetails(String titre, String img) {
     borderRadius: BorderRadius.circular(7.0),
     child: Container(
       height: 120.0,
-      width: 120.0,
+      width: 280.0,
       // width: (MediaQuery.of(context).size.width / 2) - 20,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7.0), color: Colors.white),

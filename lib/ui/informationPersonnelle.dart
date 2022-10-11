@@ -54,7 +54,7 @@ class _InformationPersonnellePageState
   String profession = ""; //good
   String sexe = ""; //good
   String ville = ""; //goog
-  var etatCivil = null; //good
+  var etatC = null; //good
   String photoIdent = "";
   var utilisateur = "";
   String idUser = "";
@@ -172,8 +172,8 @@ class _InformationPersonnellePageState
                         ? ''
                         : widget.userName,
                     style: GoogleFonts.poppins(
-                      color: Colors.green,
-                      fontSize: 13,
+                      color: Colors.red,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                   )
@@ -352,15 +352,15 @@ class _InformationPersonnellePageState
                     width: 20.0,
                   ),
                   DropdownButton(
-                      value: etatCivil,
+                      value: etatC,
                       elevation: 10,
-                      items: etatCivil,
+                      items: listEtat,
                       hint: Text(
                         'Sélectionnez l\'état civil',
                         style: TextStyle(color: Colors.black, fontSize: 12),
                       ),
                       onChanged: (value) {
-                        etatCivil = value.toString();
+                        etatC = value.toString();
                         setState(() {});
                       }),
                 ],
@@ -515,7 +515,7 @@ class _InformationPersonnellePageState
       showSnackbar('Veuillez selectionner la date de naissance Svp !');
     } else if (villeNaissanceController.text == '') {
       showSnackbar('Veuillez remplir la ville de naissance Svp !');
-    } else if (etatCivil == '') {
+    } else if (etatC == '') {
       showSnackbar('Veuillez selectionner l\'etat civil Svp !');
     } else if (residenceController.text == '') {
       showSnackbar('Veuillez remplir l\'adresse Svp !');
@@ -647,7 +647,7 @@ class _InformationPersonnellePageState
     prefs.setString('sexe', sexe);
     prefs.setString('dateNaissance', _datenaissance);
     prefs.setString('lieuNaissance', villeNaissanceController.text);
-    prefs.setString('etatCivil', etatCivil);
+    prefs.setString('etatCivil', etatC);
     prefs.setString('residence', residenceController.text);
     prefs.setString('telephone', telephoneController.text);
     prefs.setString('nationalite', nationaliteController.text);

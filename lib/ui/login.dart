@@ -9,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zando_id/ui/informationPersonnelle.dart';
+import 'package:zando_id/ui/menu.dart';
+import 'package:zando_id/widgets/loading.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -16,6 +18,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool _loading = false;
+
   TextEditingController userController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
@@ -36,61 +40,106 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Scaffold(
-        key: key,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.red.shade200,
-                    backgroundImage: AssetImage("assets/hv.png"),
-                    /* child: Icon(CupertinoIcons.person_alt_circle,
+    return _loading
+        ? Loading()
+        : Center(
+            child: Scaffold(
+              key: key,
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 30,
+                        ),
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.red.shade200,
+                          backgroundImage: AssetImage("assets/hv.png"),
+                          /* child: Icon(CupertinoIcons.person_alt_circle,
                       color: Colors.red,
                       size: 60,),*/
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "ZANDO ID",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                      alignment: Alignment.topLeft,
-                      child: Text("Login.",
-                          style: GoogleFonts.poppins(
-                            color: Colors.blue[800],
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                          ))),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "ZANDO ID",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            )),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                            alignment: Alignment.topLeft,
+                            child: Text("Login.",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.blue[800],
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.bold,
+                                ))),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                autofocus: true,
+                                controller: userController,
+                                keyboardType: TextInputType.text,
+                                textAlignVertical: TextAlignVertical.bottom,
+                                //maxLength: 9,
+                                onChanged: (value) {
+                                  setState(() {
+                                    counterText = value.length.toString();
+                                  });
+
+                                  if (value.length > 3) {
+                                    setState(() {
+                                      valid = true;
+                                    });
+                                  } else {
+                                    valid = false;
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(
+                                        bottom: 10, top: 22, left: 10),
+                                    //counterText: '$counterText/09',
+                                    counterStyle: TextStyle(fontSize: 10),
+                                    labelText: 'Utilisateur',
+                                    hintText: 'Entrez le nom d\'utilisateur',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 1)),
+                                    hintStyle: TextStyle(
+                                        fontSize: 10, color: Colors.grey)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        TextField(
                           autofocus: true,
-                          controller: userController,
-                          keyboardType: TextInputType.text,
+                          controller: passwordController,
+                          keyboardType: TextInputType.visiblePassword,
                           textAlignVertical: TextAlignVertical.bottom,
-                          //maxLength: 9,
+                          obscureText: showPassword,
+                          //maxLength: 20,
                           onChanged: (value) {
                             setState(() {
                               counterText = value.length.toString();
@@ -98,128 +147,87 @@ class _LoginState extends State<Login> {
 
                             if (value.length > 3) {
                               setState(() {
-                                valid = true;
+                                validPassword = true;
                               });
                             } else {
-                              valid = false;
+                              validPassword = false;
                             }
                           },
                           decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
-                              //counterText: '$counterText/09',
+                              // counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
-                              labelText: 'Utilisateur',
-                              hintText: 'Entrez le nom d\'utilisateur',
+                              labelText: 'Mot de passe',
+                              hintText: 'Tapez votre mot de passe',
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.remove_red_eye,
+                                  color: this.showPassword
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    showPassword = !showPassword;
+                                  });
+                                },
+                              ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      BorderSide(color: Colors.blue, width: 1)),
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 3)),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.blue, width: 1)),
+                                  borderSide: BorderSide(
+                                      color: Colors.black26, width: 3)),
                               hintStyle:
                                   TextStyle(fontSize: 10, color: Colors.grey)),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  TextField(
-                    autofocus: true,
-                    controller: passwordController,
-                    keyboardType: TextInputType.visiblePassword,
-                    textAlignVertical: TextAlignVertical.bottom,
-                    obscureText: showPassword,
-                    //maxLength: 20,
-                    onChanged: (value) {
-                      setState(() {
-                        counterText = value.length.toString();
-                      });
-
-                      if (value.length > 3) {
-                        setState(() {
-                          validPassword = true;
-                        });
-                      } else {
-                        validPassword = false;
-                      }
-                    },
-                    decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.only(bottom: 10, top: 22, left: 10),
-                        // counterText: '$counterText/09',
-                        counterStyle: TextStyle(fontSize: 10),
-                        labelText: 'Mot de passe',
-                        hintText: 'Tapez votre mot de passe',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.remove_red_eye,
-                            color:
-                                this.showPassword ? Colors.blue : Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              showPassword = !showPassword;
-                            });
-                          },
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 3)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black26, width: 3)),
-                        hintStyle: TextStyle(fontSize: 10, color: Colors.grey)),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        bottomNavigationBar: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(12.0),
-            //ce bouton fonctionne uniquement si le numero est valid
-            child: AbsorbPointer(
-              absorbing: valid == true ? false : true,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  //Prend la couleur bleu si numero valid sinon grise
-                  primary: valid == true && validPassword == true
-                      ? Colors.green[700]
-                      : Colors.grey,
                 ),
-                onPressed: () {
-                  mdp = passwordController.text;
-                  user = userController.text;
-                  loger(user, mdp);
+              ),
+              bottomNavigationBar: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.all(12.0),
+                  //ce bouton fonctionne uniquement si le numero est valid
+                  child: AbsorbPointer(
+                    absorbing: valid == true ? false : true,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        //Prend la couleur bleu si numero valid sinon grise
+                        primary: valid == true && validPassword == true
+                            ? Colors.green[700]
+                            : Colors.grey,
+                      ),
+                      onPressed: () {
+                        mdp = passwordController.text;
+                        user = userController.text;
+                        loger(user, mdp);
 
-                  /*Navigator.pushReplacement(
+                        /*Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => InformationPersonnellePage())); */
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text(
-                    "Se Connecter",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Text(
+                          "Se Connecter",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 
   void toast(String msag) {
@@ -251,6 +259,9 @@ class _LoginState extends State<Login> {
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       //S'il est connecter on vas vers l'API ici...
+      setState(() {
+        _loading = true;
+      });
       try {
         print(" ******  debut try   ****** ");
         final response = await http
@@ -291,11 +302,11 @@ class _LoginState extends State<Login> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        InformationPersonnellePage(userName: login)));
+                    builder: (context) => Acceuil(userName: login)));
 
             setState(() {
               toast("Connecter");
+              bool _loading = false;
             });
           } else {
             var msg = "Le nom utilisateur ou mot de passe est incorrecte";

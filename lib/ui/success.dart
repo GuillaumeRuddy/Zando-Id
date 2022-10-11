@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zando_id/ui/informationPersonnelle.dart';
+import 'package:zando_id/ui/menu.dart';
 import 'package:zando_id/widgets/ButtonWANGI.dart';
 
 class Success extends StatefulWidget {
@@ -51,10 +52,10 @@ class _SuccessState extends State<Success> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 30,
             ),
             ButtonWANGI(
-              titre: 'OKEY',
+              titre: 'Continuer',
               color: Colors.red,
               onPressed: () {
                 Navigator.pushReplacement(
@@ -62,6 +63,19 @@ class _SuccessState extends State<Success> {
                     MaterialPageRoute(
                         builder: (context) =>
                             InformationPersonnellePage(userName: utilisateur)));
+              },
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            ButtonWANGI(
+              titre: 'Aller au menu',
+              color: Colors.green,
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Acceuil(userName: utilisateur)));
               },
             ),
           ],
