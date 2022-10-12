@@ -53,8 +53,8 @@ class DrawerAdd extends StatelessWidget {
         ),
         ListTile(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => Actualite()));
+            /*Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => Actualite())); */
           },
           leading: Icon(
             Icons.book,

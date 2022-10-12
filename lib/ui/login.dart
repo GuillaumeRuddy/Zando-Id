@@ -302,7 +302,8 @@ class _LoginState extends State<Login> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Acceuil(userName: login)));
+                    builder: (context) =>
+                        Acceuil(userName: login, idUser: idUser.toString())));
 
             setState(() {
               toast("Connecter");
@@ -317,9 +318,11 @@ class _LoginState extends State<Login> {
 
           //ici tu met la redirection en fonction de l'action qui vas suivre...
         } else {
+          print("la reponse du status est éééééééééé ");
           print(response.statusCode);
-          var msg = "vérification impossible";
           setState(() {
+            bool _loading = false;
+            var msg = "vérification impossible";
             snackBar(msg);
           });
         }

@@ -6,6 +6,7 @@ class Personne {
   String sexe;
   String lieu_naissance;
   String date_naissance;
+  String etatCiv;
   String residence;
   String telephone;
   String nationalite;
@@ -21,6 +22,7 @@ class Personne {
       this.sexe = "",
       this.lieu_naissance = "",
       this.date_naissance = "",
+      this.etatCiv = "",
       this.telephone = "",
       this.residence = "",
       this.nationalite = "",
@@ -36,6 +38,7 @@ class Personne {
       sexe: i["sexe"],
       lieu_naissance: i["lieu_naissance"],
       date_naissance: i["date_naissance"],
+      etatCiv: i["etat_civil"],
       telephone: i["telephone"],
       residence: i["residence"],
       nationalite: i["nationalite"],
@@ -51,6 +54,7 @@ class Personne {
         "sexe": sexe,
         "lieu_naissance": lieu_naissance,
         "date_naissance": date_naissance,
+        "etat_civil": etatCiv,
         "telephone": telephone,
         "residence": residence,
         "nationalite": nationalite,

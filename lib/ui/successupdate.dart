@@ -5,21 +5,19 @@ import 'package:zando_id/ui/informationPersonnelle.dart';
 import 'package:zando_id/ui/menu.dart';
 import 'package:zando_id/widgets/ButtonWANGI.dart';
 
-class Success extends StatefulWidget {
-  const Success({Key? key}) : super(key: key);
+class SuccesUpdate extends StatefulWidget {
+  const SuccesUpdate({Key? key}) : super(key: key);
 
   @override
-  State<Success> createState() => _SuccessState();
+  State<SuccesUpdate> createState() => _SuccessUpdateState();
 }
 
-class _SuccessState extends State<Success> {
+class _SuccessUpdateState extends State<SuccesUpdate> {
   var utilisateur;
-  var idUser;
 
   void _getPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     utilisateur = prefs.getString('user')!;
-    idUser = prefs.getString("id_user");
   }
 
   @override
@@ -44,7 +42,7 @@ class _SuccessState extends State<Success> {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                "Vendeur enregistrer avec succès",
+                "Vendeur Modifier avec succès",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.black,
@@ -57,30 +55,13 @@ class _SuccessState extends State<Success> {
               height: 30,
             ),
             ButtonWANGI(
-              titre: 'Continuer',
-              color: Colors.red,
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            InformationPersonnellePage(userName: utilisateur)));
-              },
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            ButtonWANGI(
               titre: 'Aller au menu',
               color: Colors.green,
               onPressed: () {
-                Navigator.pushReplacement(
+                /*Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Acceuil(
-                              userName: utilisateur,
-                              idUser: idUser,
-                            )));
+                        builder: (context) => Acceuil(userName: utilisateur))); */
               },
             ),
           ],

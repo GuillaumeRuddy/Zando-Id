@@ -6,11 +6,21 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zando_id/model/personne.dart';
+import 'package:zando_id/ui/updateInformationPersonnelle.dart';
 import 'package:zando_id/widgets/loading.dart';
 
 class Actualite extends StatefulWidget {
+  final String userName;
+  final String idUser;
+
+  //const Acceuil({Key? key, this.login}) : super(key: key);
+  const Actualite({Key? key, required this.userName, required this.idUser})
+      : super(key: key);
+
   @override
   _ActualiteState createState() => _ActualiteState();
 }
@@ -18,6 +28,7 @@ class Actualite extends StatefulWidget {
 class _ActualiteState extends State<Actualite> {
   bool _loading = false;
   List<Personne> listInfo = [];
+  var utilisateur;
 
   // le snack
   void snackBar(String msg) {
@@ -36,7 +47,7 @@ class _ActualiteState extends State<Actualite> {
   }
 
   // debut traitement API pour la recuperation des informations
-  Future info() async {
+  Future info(String idAgent) async {
     // test de connection
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
@@ -46,8 +57,13 @@ class _ActualiteState extends State<Actualite> {
       });
       try {
         final reponse = await http
-            .get(Uri.parse(
-                "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/personnes"))
+            .post(
+                Uri.parse(
+                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/rejeter"),
+                headers: <String, String>{
+                  "Content-type": "application/json; chartset=UTF-8"
+                },
+                body: jsonEncode(<String, String>{"agent_id": idAgent}))
             .timeout(const Duration(seconds: 15), onTimeout: () {
           _loading = false;
           snackBar("Delais d'attente depasser, veuillez reessaie plus tard");
@@ -55,8 +71,11 @@ class _ActualiteState extends State<Actualite> {
               'The connection has timed out, Please try again!');
         });
         if (reponse.statusCode == 200) {
-          var data = json.decode(reponse.body);
-          print("les datas que je recupère *********** " + data.toString());
+          var datas = json.decode(reponse.body);
+          print("les datas que je recupère *********** " + datas.toString());
+          var data = datas["personnes"];
+          print("les data de la personne que je recupère ***********++++ " +
+              data.toString());
           if (data != null) {
             /*var result = data["actualite du jour"];*/
             print("++++++++ je netoye ++++++++");
@@ -71,6 +90,7 @@ class _ActualiteState extends State<Actualite> {
                 "sexe": item["sexe"].toString(),
                 "lieu_naissance": item["lieu_naissance"].toString(),
                 "date_naissance": item["date_naissance"].toString(),
+                "etat_civil": item["etat_civil"].toString(),
                 "telephone": item["telephone"].toString(),
                 "residence": item["residence"].toString(),
                 "nationalite": item["nationalite"].toString(),
@@ -88,6 +108,10 @@ class _ActualiteState extends State<Actualite> {
               listInfo.add(rej);
               print("###### fin jajoute ########");
             }
+            setState(() {
+              _loading = false;
+            });
+          } else {
             setState(() {
               _loading = false;
             });
@@ -130,10 +154,16 @@ class _ActualiteState extends State<Actualite> {
     }
   }
 
+  void _getPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    utilisateur = prefs.getString('user')!;
+  }
+
   @override
   void initState() {
     super.initState();
-    info();
+    _getPreferences();
+    info(widget.idUser);
   }
 
   @override
@@ -153,7 +183,7 @@ class _ActualiteState extends State<Actualite> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      info();
+                      info(utilisateur);
                     })
               ],
             ),
@@ -172,59 +202,96 @@ class _ActualiteState extends State<Actualite> {
                         gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            colors: [Colors.blue, Colors.white])),
+                            colors: [Colors.white, Colors.blue])),
                   ),
                 ),
                 ListView.builder(
                     itemCount: listInfo.length,
                     itemBuilder: (context, i) {
                       final post = listInfo[i];
-                      return InkWell(
-                        onTap: () {
-                          /*var route = MaterialPageRoute(
-                              builder: (BuildContext context) => DetActualite(
-                                    titre: post.titre,
-                                    image: post.photo,
-                                    detail: post.details,
-                                    date: post.date,
-                                  ));
-                          Navigator.of(context).push(route);*/
-                        },
-                        child: Card(
-                          elevation: 5.0,
-                          margin: EdgeInsets.only(bottom: 3.0),
-                          child: Padding(
-                            padding: EdgeInsets.all(3.0),
-                            child: Row(
-                              children: [
-                                Icon(Icons.account_box_rounded),
-                                /*Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(post.photo),
-                                          //image: AssetImage("assets/jogo2.png"),
-                                          fit: BoxFit.cover),
-                                      borderRadius: BorderRadius.circular(8.0)),
-                                ),*/
-                                SizedBox(width: 5.0),
-                                Expanded(
-                                    child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      post.nom +
-                                          " " +
-                                          post.postnom +
-                                          " " +
-                                          post.prenom,
-                                      style: TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    /*SizedBox(
+                      if (post.nom == null || post.nom == "") {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Text(
+                                  "Aucun vendeur rejeter",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return InkWell(
+                          onTap: () {
+                            var route = MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    UpdateInformationPersonnellePage(
+                                      userName: utilisateur,
+                                      nom: post.nom,
+                                      postnom: post.postnom,
+                                      prenom: post.prenom,
+                                      sexe: post.sexe,
+                                      lieuNais: post.lieu_naissance,
+                                      dateNais: post.date_naissance,
+                                      etatcivile: post.etatCiv,
+                                      adresse: post.residence,
+                                      telephone: post.telephone,
+                                      nationalite: post.nationalite,
+                                      province: post.province,
+                                      territoire: post.territoire,
+                                      agent: post.id,
+                                      residence: post.residence,
+                                    ));
+                            Navigator.of(context).push(route);
+                          },
+                          child: Card(
+                            elevation: 5.0,
+                            margin: EdgeInsets.only(bottom: 3.0),
+                            child: Padding(
+                              padding: EdgeInsets.all(7.0),
+                              child: Row(
+                                children: [
+                                  //Icon(Icons.account_box_rounded),
+                                  Container(
+                                    width: 50.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            //image: NetworkImage(post.photo),
+                                            image:
+                                                AssetImage("assets/visage.png"),
+                                            fit: BoxFit.cover),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                  ),
+                                  SizedBox(width: 8.0),
+                                  Expanded(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        post.nom.toUpperCase() +
+                                            " - " +
+                                            post.postnom.toUpperCase() +
+                                            " - " +
+                                            post.prenom.toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blue[800]),
+                                      ),
+                                      /*SizedBox(
                                       height: 10.0,
                                     ),
                                     Divider(height: 3, color: Colors.black),
@@ -246,13 +313,14 @@ class _ActualiteState extends State<Actualite> {
                                         )
                                       ],
                                     )*/
-                                  ],
-                                ))
-                              ],
+                                    ],
+                                  ))
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     })
               ],
             ));

@@ -7,9 +7,11 @@ import 'package:zando_id/widgets/cardDetails.dart';
 class Acceuil extends StatefulWidget {
   //final VoidCallback login;
   final String userName;
+  final String idUser;
 
   //const Acceuil({Key? key, this.login}) : super(key: key);
-  const Acceuil({Key? key, required this.userName}) : super(key: key);
+  const Acceuil({Key? key, required this.userName, required this.idUser})
+      : super(key: key);
 
   @override
   _AcceuilState createState() => _AcceuilState();
@@ -163,7 +165,9 @@ class _AcceuilState extends State<Acceuil> {
                                       onTap: () {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
-                                                builder: (_) => Actualite()));
+                                                builder: (_) => Actualite(
+                                                    userName: widget.userName,
+                                                    idUser: widget.idUser)));
                                       },
                                       child: CardDetails(
                                           'Rejeter', 'assets/hv.png')),
