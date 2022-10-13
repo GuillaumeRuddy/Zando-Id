@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zando_id/ui/home.dart';
 import 'package:zando_id/ui/informationPersonnelle.dart';
 import 'package:zando_id/ui/menu.dart';
 import 'package:zando_id/widgets/ButtonWANGI.dart';
@@ -77,7 +78,7 @@ class _SuccessState extends State<Success> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Acceuil(
+                        builder: (context) => Home(
                               userName: utilisateur,
                               idUser: idUser,
                             )));

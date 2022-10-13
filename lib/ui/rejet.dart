@@ -235,6 +235,7 @@ class _ActualiteState extends State<Actualite> {
                             var route = MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     UpdateInformationPersonnellePage(
+                                      idVendeur: post.id,
                                       userName: utilisateur,
                                       nom: post.nom,
                                       postnom: post.postnom,

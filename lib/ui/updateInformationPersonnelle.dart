@@ -12,13 +12,14 @@ import 'package:zando_id/model/categorie.dart';
 import 'package:zando_id/model/personne.dart';
 import 'package:zando_id/ui/activite.dart';
 import 'package:zando_id/ui/success.dart';
+import 'package:zando_id/ui/successupdate.dart';
 import 'package:zando_id/widgets/ButtonWANGI.dart';
 import 'package:http/http.dart' as http;
 
 //import 'package:image/image.dart' as ImageProcess;
 
 class UpdateInformationPersonnellePage extends StatefulWidget {
-  final String idUser;
+  final String idVendeur;
   final String userName;
   final String nom;
   final String postnom;
@@ -37,7 +38,7 @@ class UpdateInformationPersonnellePage extends StatefulWidget {
   //UpdateInformationPersonnellePage({Key? key}) : super(key: key);
   UpdateInformationPersonnellePage(
       {Key? key,
-      required this.idUser,
+      required this.idVendeur,
       required this.userName,
       required this.nom,
       required this.postnom,
@@ -171,7 +172,7 @@ class _UpdateInformationPersonnellePageState
   var etatC = null; //good
   String photoIdent = "";
   var utilisateur = "";
-  String idUser = "";
+  String idVendeur = "";
 
   List<DropdownMenuItem<String>> listEtat = [];
 
@@ -872,8 +873,16 @@ class _UpdateInformationPersonnellePageState
       showSnackbar('Veuillez selectionner la place Svp !');
     } else if (typeategorie == '') {
       showSnackbar('Veuillez selectionner la categorie Svp !');
+    } else if (!dateNaiss.isBefore(tgl)) {
+      /*saveInfosPersonnel();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Activite(user: utilisateur)));*/
+      showSnackbar("veuillez renseigner une bonne date");
     } else {
       enregistrement(
+        widget.idVendeur.toString(),
         nomController.text,
         postnomController.text,
         prenomController.text,
@@ -893,18 +902,6 @@ class _UpdateInformationPersonnellePageState
         typePlace,
         typeategorie,
       );
-    }
-    {
-      //seconde page
-      if (dateNaiss.isBefore(tgl)) {
-        saveInfosPersonnel();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Activite(user: utilisateur)));
-      } else {
-        showSnackbar("veuillez renseigner une bonne date");
-      }
     }
   }
 
@@ -997,6 +994,7 @@ class _UpdateInformationPersonnellePageState
   } //fin widget
 
   Future enregistrement(
+      String identifiant,
       String nom,
       String postnom,
       String prenom,
@@ -1017,7 +1015,26 @@ class _UpdateInformationPersonnellePageState
       String categorie) async {
     //Debut Test de connection, pour voir si l'utilisateur est connecter
     var connectivityResult = await (Connectivity().checkConnectivity());
-    print(" ******  Nous sommes dans le check internet   ****** ");
+    print(" ******  Identifiant ---- $identifiant   ****** ");
+    print(" ******  Nom ---- $nom   ****** ");
+    print(" ******  PostNom ---- $postnom   ****** ");
+    print(" ******  prenom ---- $prenom   ****** ");
+    print(" ******  Sexe ---- $sexe  ****** ");
+    print(" ******  Lieu de naissance --- $lieuNais   ****** ");
+    print(" ******  date naissance --- $dateNais  ****** ");
+    print(" ******  Etat Civil ---- $etatcivile   ****** ");
+    print(" ******  Adresse ---- $adresse   ****** ");
+    print(" ******  Telephone --- $telephone   ****** ");
+    print(" ******  Nationale --- $nationalite   ****** ");
+    print(" ******  province --- $province   ****** ");
+    print(" ******  territoire --- $territoire   ****** ");
+    print(" ******  agent id --- $agent   ****** ");
+    print(" ******  residence --- $residence   ****** ");
+    print(" ******  marche provisiore --- $marchePro   ****** ");
+    print(" ******  Article --- $article   ****** ");
+    print(" ******  Place --- $place   ****** ");
+    print(" ******  Categorie --- $categorie   ****** ");
+
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       //S'il est connecter on vas vers l'API ici...
@@ -1025,11 +1042,14 @@ class _UpdateInformationPersonnellePageState
         _loading = true;
       });
       try {
-        print(" ******  debut try   ****** ");
+        print(" ******  debut try modification ****** ");
+        //var identif = widget.idVendeur;
+        var urls =
+            "https://zando-app.e-entrepreneurdrc.com/zando_api/public/api/personnes/$identifiant";
+        print(
+            " ---------- voila url ------ *******  $urls ******* ---------------------------");
         final response = await http
-            .put(
-                Uri.parse(
-                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/personnes/id"),
+            .put(Uri.parse(urls),
                 headers: <String, String>{
                   "Content-type": "application/json; chartset=UTF-8"
                 },
@@ -1062,9 +1082,9 @@ class _UpdateInformationPersonnellePageState
           throw TimeoutException(
               'The connection has timed out, Please try again!');
         });
-        print(" ******  response  ****** ");
+        print(" ******  response Modification  ****** ");
         if (response.statusCode == 200) {
-          print(" ******  200  ****** ");
+          print(" ******  200 de modification ****** ");
           //<------ Teste si la requette vers l'API marche
           var data = jsonDecode(response
               .body); //<---- recuperation des données qui sont en format JSON
@@ -1073,8 +1093,8 @@ class _UpdateInformationPersonnellePageState
           var retour = data["status"];
           if (retour == "success") {
             // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Success()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => SuccessUpdate()));
 
             setState(() {
               //showSnackbar("Vendeur Enregistrer");
