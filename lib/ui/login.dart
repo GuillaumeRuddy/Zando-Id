@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zando_id/ui/home.dart';
 import 'package:zando_id/ui/informationPersonnelle.dart';
 import 'package:zando_id/ui/menu.dart';
 import 'package:zando_id/widgets/loading.dart';
@@ -204,7 +205,16 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         mdp = passwordController.text;
                         user = userController.text;
+
                         loger(user, mdp);
+
+                        /*Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Home(
+                                      userName: user,
+                                      idUser: "1",
+                                    )));*/
 
                         /*Navigator.pushReplacement(
                       context,
@@ -303,7 +313,13 @@ class _LoginState extends State<Login> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        Acceuil(userName: login, idUser: idUser.toString())));
+                        Home(userName: login, idUser: idUser.toString())));
+
+            /*Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Acceuil(userName: login, idUser: idUser.toString())));*/
 
             setState(() {
               toast("Connecter");

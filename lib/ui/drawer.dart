@@ -18,39 +18,39 @@ class DrawerAdd extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                  radius: 60.0, backgroundImage: AssetImage('assets/hv.png')),
+                  radius: 30.0, backgroundImage: AssetImage('assets/hv.png')),
               SizedBox(
                 height: 5.0,
               ),
               Text(
                 "ZANDO ID",
                 style: TextStyle(
-                    fontSize: 22.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w800,
-                    color: Color.fromARGB(255, 202, 126, 5)),
+                    color: Color.fromARGB(255, 66, 6, 151)),
               ),
               SizedBox(
                 height: 5.0,
               ),
-              Text(
-                "Enregistrement des vendeurs de Zando",
-                style: TextStyle(fontSize: 13.0, color: Colors.blue[900]),
-              ),
+              Text("Identification des vendeurs de Zando",
+                  style: TextStyle(
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.w700,
+                    color: Color.fromARGB(255, 212, 164, 5),
+                  )),
               //Divider(height: 3, color: Colors.black),
             ],
           ),
         )),
         SizedBox(
-          height: 5.0,
+          height: 10.0,
         ),
         /* Divider(
           color: Colors.black,
           height: 1.0,
         ), */
-        Divider(height: 1.0, color: Colors.black),
-        SizedBox(
-          height: 5.0,
-        ),
+        //Divider(height: 1.0, color: Colors.black),
+
         ListTile(
           onTap: () {
             /*Navigator.of(context)
@@ -62,7 +62,7 @@ class DrawerAdd extends StatelessWidget {
           ),
           title: Text("Liste de rejet"),
         ),
-        Divider(height: 1.0, color: Colors.black),
+        //Divider(height: 1.0, color: Colors.black),
         ListTile(
           onTap: null,
           leading: Icon(
@@ -70,6 +70,15 @@ class DrawerAdd extends StatelessWidget {
             color: Colors.blue,
           ),
           title: Text("parametre"),
+        ),
+        //Divider(height: 1.0, color: Colors.black),
+        ListTile(
+          onTap: null,
+          leading: Icon(
+            Icons.info,
+            color: Colors.blue,
+          ),
+          title: Text("A propos de nous"),
         ),
         Divider(height: 1.0, color: Colors.black),
         ListTile(
@@ -82,16 +91,7 @@ class DrawerAdd extends StatelessWidget {
             color: Colors.blue,
           ),
           title: Text("Deconnecter"),
-        ),
-        Divider(height: 1.0, color: Colors.black),
-        ListTile(
-          onTap: null,
-          leading: Icon(
-            Icons.info,
-            color: Colors.blue,
-          ),
-          title: Text("A propos de nous"),
-        ),
+        )
       ],
     );
   }

@@ -170,7 +170,7 @@ class _InformationPersonnellePageState
                   Text(
                     widget.userName == null || widget.userName.isEmpty
                         ? ''
-                        : widget.userName,
+                        : widget.userName.toUpperCase(),
                     style: GoogleFonts.poppins(
                       color: Colors.red,
                       fontSize: 14,

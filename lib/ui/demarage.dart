@@ -46,7 +46,8 @@ class Demarage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10.0),
+        margin: EdgeInsets.only(left: 30.0),
+        color: Colors.white,
         child: Row(children: [
           Text(
             'Powered by ',

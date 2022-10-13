@@ -389,7 +389,7 @@ class _UpdateInformationPersonnellePageState
               TextField(
                 controller: nomController,
                 decoration: InputDecoration(
-                    hintText: "Nom",
+                    hintText: widget.nom,
                     labelText: 'Nom',
                     hintStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
@@ -1014,7 +1014,7 @@ class _UpdateInformationPersonnellePageState
         final response = await http
             .put(
                 Uri.parse(
-                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/personnes"),
+                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/personnes/id"),
                 headers: <String, String>{
                   "Content-type": "application/json; chartset=UTF-8"
                 },

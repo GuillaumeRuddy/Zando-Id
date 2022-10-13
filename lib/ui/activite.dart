@@ -189,7 +189,7 @@ class _ActiviteState extends State<Activite> {
                         Text(
                           widget.user == null || widget.user.isEmpty
                               ? ''
-                              : widget.user,
+                              : widget.user.toUpperCase(),
                           style: GoogleFonts.poppins(
                             color: Colors.red,
                             fontSize: 14,
