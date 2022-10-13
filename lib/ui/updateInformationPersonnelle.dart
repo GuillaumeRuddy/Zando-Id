@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 //import 'package:image/image.dart' as ImageProcess;
 
 class UpdateInformationPersonnellePage extends StatefulWidget {
+  final String idUser;
   final String userName;
   final String nom;
   final String postnom;
@@ -36,6 +37,7 @@ class UpdateInformationPersonnellePage extends StatefulWidget {
   //UpdateInformationPersonnellePage({Key? key}) : super(key: key);
   UpdateInformationPersonnellePage(
       {Key? key,
+      required this.idUser,
       required this.userName,
       required this.nom,
       required this.postnom,
@@ -76,6 +78,18 @@ class _UpdateInformationPersonnellePageState
   TextEditingController adresseController = TextEditingController(); //good
   TextEditingController marcheController = TextEditingController(); //good
   TextEditingController articleController = TextEditingController(); //good
+
+  void miseDonne() {
+    nomController.text = widget.nom;
+    postnomController.text = widget.postnom; //good
+    prenomController.text = widget.prenom;
+    villeNaissanceController.text = widget.dateNais;
+    residenceController.text = widget.adresse;
+    telephoneController.text = widget.telephone;
+    nationaliteController.text = widget.nationalite;
+    provinceController.text = widget.nationalite;
+    territoireController.text = widget.territoire;
+  }
 
   //GlobalKey<ScaffoldState> cle = GlobalKey();
   var selectedcategorie; //good
@@ -330,6 +344,7 @@ class _UpdateInformationPersonnellePageState
     super.initState();
     _getPreferences();
     recupCategorie();
+    miseDonne();
   }
 
   @override
@@ -389,7 +404,7 @@ class _UpdateInformationPersonnellePageState
               TextField(
                 controller: nomController,
                 decoration: InputDecoration(
-                    hintText: widget.nom,
+                    hintText: 'Nom',
                     labelText: 'Nom',
                     hintStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
