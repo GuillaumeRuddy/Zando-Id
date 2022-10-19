@@ -72,10 +72,12 @@ class _LoginState extends State<Login> {
                             child: Text(
                               "ZANDO ID",
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                                  fontSize: 15,
+                                  color: Colors.blue[900],
+                                  fontWeight: FontWeight.bold),
                             )),
                         SizedBox(
-                          height: 30,
+                          height: 60,
                         ),
                         Container(
                             alignment: Alignment.topLeft,
@@ -176,11 +178,11 @@ class _LoginState extends State<Login> {
                               ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      color: Colors.black, width: 3)),
+                                  borderSide:
+                                      BorderSide(color: Colors.blue, width: 1)),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.black26, width: 3)),
+                                  borderSide:
+                                      BorderSide(color: Colors.blue, width: 1)),
                               hintStyle:
                                   TextStyle(fontSize: 10, color: Colors.grey)),
                         ),

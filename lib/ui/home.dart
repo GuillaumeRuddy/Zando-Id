@@ -1,14 +1,20 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zando_id/ui/drawer.dart';
 import 'package:zando_id/ui/informationPersonnelle.dart';
 import 'package:zando_id/ui/rejet.dart';
 import 'package:zando_id/widgets/cardDetails.dart';
 import 'package:zando_id/widgets/cardMenu.dart';
+import 'package:http/http.dart' as http;
 
 class Home extends StatefulWidget {
   final String userName;
@@ -22,6 +28,117 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var _loading = false;
+  var nbrRejet = 0;
+
+  // le snack
+  void snackBar(String msg) {
+    SnackBar snackBar =
+        new SnackBar(content: Text(msg), duration: new Duration(seconds: 5));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  // le toast
+  void toast(String msag) {
+    Fluttertoast.showToast(
+        msg: msag,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2);
+  }
+
+  // debut traitement API pour la recuperation des informations
+  Future info(String idAgent) async {
+    // test de connection
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      setState(() {
+        _loading = true;
+      });
+      try {
+        final reponse = await http
+            .post(
+                Uri.parse(
+                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/rejeter"),
+                headers: <String, String>{
+                  "Content-type": "application/json; chartset=UTF-8"
+                },
+                body: jsonEncode(<String, String>{"agent_id": widget.idUser}))
+            .timeout(const Duration(seconds: 15), onTimeout: () {
+          _loading = false;
+          snackBar("Delais d'attente depasser, veuillez reessaie plus tard");
+          throw TimeoutException(
+              'The connection has timed out, Please try again!');
+        });
+        if (reponse.statusCode == 200) {
+          var datas = json.decode(reponse.body);
+          print("les datas que je recupère *********** " + datas.toString());
+          var data = datas["personnes"];
+          print("les data de la personne que je recupère ***********++++ " +
+              data.toString());
+          if (data != null) {
+            /*var result = data["actualite du jour"];*/
+            print("++++++++ je calcule ++++++++");
+            for (var item in data) {
+              print(item);
+              nbrRejet = nbrRejet + 1;
+              print("les rejetes sont: ùùùùùùùùùùùù $nbrRejet");
+            }
+
+            setState(() {
+              _loading = false;
+            });
+          } else {
+            setState(() {
+              _loading = false;
+            });
+          }
+        } else {
+          setState(() {
+            _loading = false;
+          });
+          return null;
+        }
+      } on TimeoutException {
+        setState(() {
+          _loading = false;
+          print("temps d'attente depassé");
+          /*Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => Acceuil()));*/
+        });
+      } on SocketException {
+        setState(() {
+          _loading = false;
+          snackBar(
+              "Nous rencontrons un problème, veuillez essaie ulterieuement");
+        });
+        /* Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => Acceuil())); */
+      } catch (e) {
+        setState(() {
+          _loading = false;
+          snackBar(
+              "Nous rencontrons un problème, veuillez essaie ulterieuement");
+        });
+      }
+    } else {
+      setState(() {
+        _loading = false;
+        Navigator.of(context).pop();
+        //Navigator.of(context).pop(MaterialPageRoute(builder: (_) => Menu()));
+        toast("Connexion impossible, vérifier vôtre connexion internet");
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    info(widget.idUser);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +214,7 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Text(
-                        "10",
+                        nbrRejet.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,

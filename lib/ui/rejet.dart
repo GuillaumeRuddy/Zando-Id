@@ -9,7 +9,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zando_id/model/personne.dart';
+//import 'package:zando_id/model/personne.dart';
+import 'package:zando_id/model/personneComplet.dart';
 import 'package:zando_id/ui/updateInformationPersonnelle.dart';
 import 'package:zando_id/widgets/loading.dart';
 
@@ -27,7 +28,7 @@ class Actualite extends StatefulWidget {
 
 class _ActualiteState extends State<Actualite> {
   bool _loading = false;
-  List<Personne> listInfo = [];
+  List<PersonneComplet> listInfo = [];
   var utilisateur;
 
   // le snack
@@ -96,14 +97,22 @@ class _ActualiteState extends State<Actualite> {
                 "nationalite": item["nationalite"].toString(),
                 "province": item["province"].toString(),
                 "territoire": item["territoire"].toString(),
-                "photo": item["photo"].toString()
+                "photo": item["photo"].toString(),
+                "categorie_id":
+                    item["secteuractivite"]["categorie_id"].toString(),
+                "article": item["secteuractivite"]["article"].toString(),
+                "type_place": item["secteuractivite"]["type_place"].toString(),
+                "marche_provisoire":
+                    item["secteuractivite"]["marche_provisoire"].toString(),
+                "adresse": item["secteuractivite"]["adresse"].toString(),
               };
               print("###### linstance ######");
               print(it);
               print("###### je convertie en personne ########");
-              Personne rej = Personne.fromJson(it);
+              PersonneComplet rej = PersonneComplet.fromJson(it);
               print(rej.id);
               print(rej.nom);
+              print(rej.marcheProvisoire);
               print("###### jajoute ########");
               listInfo.add(rej);
               print("###### fin jajoute ########");
@@ -235,23 +244,26 @@ class _ActualiteState extends State<Actualite> {
                             var route = MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     UpdateInformationPersonnellePage(
-                                      idVendeur: post.id,
-                                      userName: utilisateur,
-                                      nom: post.nom,
-                                      postnom: post.postnom,
-                                      prenom: post.prenom,
-                                      sexe: post.sexe,
-                                      lieuNais: post.lieu_naissance,
-                                      dateNais: post.date_naissance,
-                                      etatcivile: post.etatCiv,
-                                      adresse: post.residence,
-                                      telephone: post.telephone,
-                                      nationalite: post.nationalite,
-                                      province: post.province,
-                                      territoire: post.territoire,
-                                      agent: post.id,
-                                      residence: post.residence,
-                                    ));
+                                        idVendeur: post.id,
+                                        userName: utilisateur,
+                                        nom: post.nom,
+                                        postnom: post.postnom,
+                                        prenom: post.prenom,
+                                        sexe: post.sexe,
+                                        lieuNais: post.lieu_naissance,
+                                        dateNais: post.date_naissance,
+                                        etatcivile: post.etatCiv,
+                                        adresse: post.residence,
+                                        telephone: post.telephone,
+                                        nationalite: post.nationalite,
+                                        province: post.province,
+                                        territoire: post.territoire,
+                                        agent: post.id,
+                                        residence: post.residence,
+                                        marcheProvisoire: post.marcheProvisoire,
+                                        article: post.article,
+                                        place: post.place,
+                                        categorie: post.categorie));
                             Navigator.of(context).push(route);
                           },
                           child: Card(

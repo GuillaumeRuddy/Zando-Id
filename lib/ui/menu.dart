@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zando_id/ui/drawer.dart';
 import 'package:zando_id/ui/informationPersonnelle.dart';
 import 'package:zando_id/ui/rejet.dart';
@@ -6,12 +7,11 @@ import 'package:zando_id/widgets/cardDetails.dart';
 
 class Acceuil extends StatefulWidget {
   //final VoidCallback login;
-  final String userName;
-  final String idUser;
+  //final String userName;
+  //final String idUser;
 
   //const Acceuil({Key? key, this.login}) : super(key: key);
-  const Acceuil({Key? key, required this.userName, required this.idUser})
-      : super(key: key);
+  const Acceuil({Key? key}) : super(key: key);
 
   @override
   _AcceuilState createState() => _AcceuilState();
@@ -19,6 +19,12 @@ class Acceuil extends StatefulWidget {
 
 class _AcceuilState extends State<Acceuil> {
   bool _loading = false;
+  var utilisateur = "";
+
+  void _getPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    utilisateur = prefs.getString('user')!;
+  }
 
   @override
   void initState() {
@@ -27,7 +33,9 @@ class _AcceuilState extends State<Acceuil> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget FutureBuilder(BuildContext context) {
+    Future:
+    _getPreferences();
     Size taille = MediaQuery.of(context).size;
     return Scaffold(
         drawer: Drawer(
@@ -53,6 +61,13 @@ class _AcceuilState extends State<Acceuil> {
                               bottomLeft: Radius.circular(60.0),
                               bottomRight: Radius.circular(60.0),
                             )),
+                      ),
+                      Row(
+                        children: [
+                          Text("Utilisateur connecter: "),
+                          SizedBox(width: 15.0),
+                          Text(utilisateur)
+                        ],
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,7 +158,7 @@ class _AcceuilState extends State<Acceuil> {
                                                 builder: (_) =>
                                                     InformationPersonnellePage(
                                                         userName:
-                                                            widget.userName)));
+                                                            utilisateur)));
                                       },
                                       child: CardDetails(
                                           'Enregistrement', 'assets/hv.png')),
@@ -162,13 +177,7 @@ class _AcceuilState extends State<Acceuil> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (_) => Actualite(
-                                                    userName: widget.userName,
-                                                    idUser: widget.idUser)));
-                                      },
+                                      onTap: () {},
                                       child: CardDetails(
                                           'Rejeter', 'assets/hv.png')),
                                   /*InkWell(
@@ -189,5 +198,11 @@ class _AcceuilState extends State<Acceuil> {
             ],
           )
         ]));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }

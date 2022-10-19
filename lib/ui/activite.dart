@@ -359,25 +359,25 @@ class _ActiviteState extends State<Activite> {
       showSnackbar('Veuillez selectionner la categorie Svp !');
     } else {
       enregistrement(
-        nom,
-        postnom,
-        prenom,
-        sexe,
-        lieuNaissance,
-        dateNaissance,
-        etatCiv,
-        adresse,
-        telephone,
-        nationalite,
-        province,
-        territoire,
-        agent,
-        adresseController.text,
-        marcheController.text,
-        articleController.text,
-        typePlace,
-        typeategorie,
-      );
+          nom,
+          postnom,
+          prenom,
+          sexe,
+          lieuNaissance,
+          dateNaissance,
+          etatCiv,
+          adresse,
+          telephone,
+          nationalite,
+          province,
+          territoire,
+          agent,
+          adresseController.text,
+          marcheController.text,
+          articleController.text,
+          typePlace,
+          typeategorie,
+          photo);
     }
   }
 
@@ -399,7 +399,8 @@ class _ActiviteState extends State<Activite> {
       String marchePro,
       String article,
       String place,
-      String categorie) async {
+      String categorie,
+      String photo) async {
     //Debut Test de connection, pour voir si l'utilisateur est connecter
     var connectivityResult = await (Connectivity().checkConnectivity());
     print(" ******  Nous sommes dans le check internet   ****** ");
@@ -437,7 +438,8 @@ class _ActiviteState extends State<Activite> {
                   "type_place": place,
                   "adresse": residence,
                   "marche_provisoire": marchePro,
-                  "article": article
+                  "article": article,
+                  "photo": photo
                 }))
             .timeout(const Duration(seconds: 20), onTimeout: () {
           //<----Gestion du time out dans le cas ou sa prend trop de temps

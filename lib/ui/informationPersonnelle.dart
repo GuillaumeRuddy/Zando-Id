@@ -130,8 +130,8 @@ class _InformationPersonnellePageState
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     _getPreferences();
+    super.initState();
   }
 
   @override

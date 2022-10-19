@@ -35,26 +35,34 @@ class UpdateInformationPersonnellePage extends StatefulWidget {
   final String territoire;
   final String agent;
   final String residence;
+  final String marcheProvisoire;
+  final String article;
+  final String place;
+  final String categorie;
   //UpdateInformationPersonnellePage({Key? key}) : super(key: key);
-  UpdateInformationPersonnellePage(
-      {Key? key,
-      required this.idVendeur,
-      required this.userName,
-      required this.nom,
-      required this.postnom,
-      required this.prenom,
-      required this.sexe,
-      required this.lieuNais,
-      required this.dateNais,
-      required this.etatcivile,
-      required this.adresse,
-      required this.telephone,
-      required this.nationalite,
-      required this.province,
-      required this.territoire,
-      required this.agent,
-      required this.residence})
-      : super(key: key);
+  UpdateInformationPersonnellePage({
+    Key? key,
+    required this.idVendeur,
+    required this.userName,
+    required this.nom,
+    required this.postnom,
+    required this.prenom,
+    required this.sexe,
+    required this.lieuNais,
+    required this.dateNais,
+    required this.etatcivile,
+    required this.adresse,
+    required this.telephone,
+    required this.nationalite,
+    required this.province,
+    required this.territoire,
+    required this.agent,
+    required this.residence,
+    required this.marcheProvisoire,
+    required this.article,
+    required this.place,
+    required this.categorie,
+  }) : super(key: key);
 
   @override
   _UpdateInformationPersonnellePageState createState() =>
@@ -90,6 +98,14 @@ class _UpdateInformationPersonnellePageState
     nationaliteController.text = widget.nationalite;
     provinceController.text = widget.nationalite;
     territoireController.text = widget.territoire;
+    adresseController.text = widget.adresse;
+    marcheController.text = widget.marcheProvisoire;
+    articleController.text = widget.article;
+
+    selectTypeplace = widget.place;
+    selectedcategorie = widget.categorie;
+    typePlace = widget.place;
+    typeategorie = widget.categorie;
   }
 
   //GlobalKey<ScaffoldState> cle = GlobalKey();

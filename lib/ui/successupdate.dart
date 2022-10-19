@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zando_id/ui/home.dart';
 import 'package:zando_id/ui/informationPersonnelle.dart';
 import 'package:zando_id/ui/menu.dart';
 import 'package:zando_id/widgets/ButtonWANGI.dart';
 
-class SuccesUpdate extends StatefulWidget {
-  const SuccesUpdate({Key? key}) : super(key: key);
+class SuccessUpdate extends StatefulWidget {
+  const SuccessUpdate({Key? key}) : super(key: key);
 
   @override
-  State<SuccesUpdate> createState() => _SuccessUpdateState();
+  State<SuccessUpdate> createState() => _SuccessState();
 }
 
-class _SuccessUpdateState extends State<SuccesUpdate> {
+class _SuccessState extends State<SuccessUpdate> {
   var utilisateur;
+  var idUser;
 
   void _getPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     utilisateur = prefs.getString('user')!;
+    idUser = prefs.getString("id_user");
   }
 
   @override
@@ -42,7 +45,7 @@ class _SuccessUpdateState extends State<SuccesUpdate> {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                "Vendeur Modifier avec succès",
+                "Vendeur enregistrer avec succès",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.black,
@@ -55,13 +58,30 @@ class _SuccessUpdateState extends State<SuccesUpdate> {
               height: 30,
             ),
             ButtonWANGI(
+              titre: 'Continuer',
+              color: Colors.red,
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            InformationPersonnellePage(userName: utilisateur)));
+              },
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            ButtonWANGI(
               titre: 'Aller au menu',
               color: Colors.green,
               onPressed: () {
-                /*Navigator.pushReplacement(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Acceuil(userName: utilisateur))); */
+                        builder: (context) => Home(
+                              userName: utilisateur,
+                              idUser: idUser,
+                            )));
               },
             ),
           ],
