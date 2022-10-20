@@ -4,7 +4,10 @@ import 'package:zando_id/ui/login.dart';
 import 'package:zando_id/ui/rejet.dart';
 
 class DrawerAdd extends StatelessWidget {
-  const DrawerAdd({Key? key}) : super(key: key);
+  final String userName;
+  final String idUser;
+  const DrawerAdd({Key? key, required this.userName, required this.idUser})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class DrawerAdd extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w800,
-                    color: Color.fromARGB(255, 66, 6, 151)),
+                    color: Color.fromARGB(255, 92, 16, 198)),
               ),
               SizedBox(
                 height: 5.0,
@@ -55,6 +58,8 @@ class DrawerAdd extends StatelessWidget {
           onTap: () {
             /*Navigator.of(context)
                 .push(MaterialPageRoute(builder: (_) => Actualite())); */
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => Actualite(userName: userName, idUser: idUser)));
           },
           leading: Icon(
             Icons.book,

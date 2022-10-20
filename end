@@ -1,0 +1,41 @@
+[33mcommit 78787fdf37b185e38e34a72ac4358d7a246ceaa5[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Profondeur <ProfondeurAgency@gmail.com>
+Date:   Wed Oct 19 21:21:09 2022 +0100
+
+    modification de update sans photo ni ajout de la position
+
+[33mcommit 483cb22103f6cbce1dfeafc759a8049045dc0cd2[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Profondeur <ProfondeurAgency@gmail.com>
+Date:   Thu Oct 13 20:44:29 2022 +0100
+
+    la modification passe maintenant
+
+[33mcommit 4111f6ecb4ea682d7be07244a3cd934053bc9ee1[m
+Author: Profondeur <ProfondeurAgency@gmail.com>
+Date:   Thu Oct 13 19:21:59 2022 +0100
+
+    insertioin dans modification reussi mais pas tester
+
+[33mcommit faf98164d79a39550f3823b31cce714a6b75f564[m
+Author: Profondeur <ProfondeurAgency@gmail.com>
+Date:   Thu Oct 13 16:17:38 2022 +0100
+
+    creation du nouveau menu avec ces integrations
+
+[33mcommit 26832613b79cf762c5789d6080829d9bb7492fad[m
+Author: Profondeur <ProfondeurAgency@gmail.com>
+Date:   Wed Oct 12 14:55:14 2022 +0100
+
+    incrustation de rejet dans le projet succes
+
+[33mcommit 9cb87a0a31f8d88d5080c1f1c9d5393795daedb9[m
+Author: Guillaume <Guillaume777@yahoo.fr>
+Date:   Tue Oct 11 13:50:50 2022 +0200
+
+    Ajout du spinner, liste de rejet,
+
+[33mcommit 4a01a69614a472884002448836425638357e7837[m
+Author: Guillaume <Guillaume777@yahoo.fr>
+Date:   Mon Oct 10 18:07:28 2022 +0200
+
+    premier depot avec enregistrment okey

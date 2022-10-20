@@ -388,9 +388,10 @@ class _InformationPersonnellePageState
               TextField(
                 controller: telephoneController,
                 keyboardType: TextInputType.phone,
+                maxLength: 13,
                 decoration: InputDecoration(
                     hintText: 'Télephone',
-                    labelText: 'Téléphone',
+                    labelText: 'Téléphone avec +243',
                     hintStyle: TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),

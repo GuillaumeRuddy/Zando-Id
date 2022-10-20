@@ -263,7 +263,7 @@ class _ActualiteState extends State<Actualite> {
                                         marcheProvisoire: post.marcheProvisoire,
                                         article: post.article,
                                         place: post.place,
-                                        categorie: post.categorie));
+                                        categorie: "1"));
                             Navigator.of(context).push(route);
                           },
                           child: Card(

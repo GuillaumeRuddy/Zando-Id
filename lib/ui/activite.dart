@@ -406,16 +406,21 @@ class _ActiviteState extends State<Activite> {
     print(" ******  Nous sommes dans le check internet   ****** ");
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
-      //S'il est connecter on vas vers l'API ici...
+      //S'il est connecter on vas; vers l'API ici...
       setState(() {
         _loading = true;
       });
       try {
         print(" ******  debut try   ****** ");
+        print(" ******  debut Photo  ****** ");
+        print(photo);
+        print(" ******  fin photo  ****** ");
+        print(
+            "**** nom: $nom ***** postnom: $postnom ***** prenom: $prenom **** sexe: $sexe **** lieuNais: $lieuNaissance **** date: $dateNais **** etatciv: $etatcivile **** residence: $adresse **** telephone: $telephone **** nationalite: $nationalite **** province: $province **** categorie : $categorie **** agent id: $agent **** place: $place **** adresse : $residence **** marcheprov: $marchePro **** article: $article **** ");
         final response = await http
             .post(
                 Uri.parse(
-                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/personnes"),
+                    "http://parentseleves-rdc.org/zando/public/api/personnes"),
                 headers: <String, String>{
                   "Content-type": "application/json; chartset=UTF-8"
                 },
@@ -439,7 +444,7 @@ class _ActiviteState extends State<Activite> {
                   "adresse": residence,
                   "marche_provisoire": marchePro,
                   "article": article,
-                  "photo": photo
+                  "photo": "/9j/4QFwRXhpZgAATU0AKgAAAAgABwEAAAQAAAABAAABLAEQ"
                 }))
             .timeout(const Duration(seconds: 20), onTimeout: () {
           //<----Gestion du time out dans le cas ou sa prend trop de temps
@@ -507,7 +512,7 @@ class _ActiviteState extends State<Activite> {
       try {
         final response = await http.get(
             Uri.parse(
-                "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/categories"),
+                "http://parentseleves-rdc.org/zando/public/api/categories"),
             headers: <String, String>{
               "Content-type": "application/json; chartset=UTF-8"
             }).timeout(const Duration(seconds: 20), onTimeout: () {

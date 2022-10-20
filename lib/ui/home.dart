@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
         title: Text("Zando Id"),
       ),
       drawer: Drawer(
-        child: DrawerAdd(),
+        child: DrawerAdd(userName: widget.userName, idUser: widget.idUser),
       ),
       body: Column(
         //shrinkWrap: true,
@@ -164,7 +164,7 @@ class _HomeState extends State<Home> {
                     style: GoogleFonts.poppins(
                       color: Color.fromARGB(255, 201, 19, 6),
                       fontSize: 30,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
                   )),
               Container(
@@ -195,7 +195,7 @@ class _HomeState extends State<Home> {
                         Container(
                           padding: EdgeInsets.all(25.0),
                           child: Text(
-                            "VENDEUR INCOMPLET",
+                            "VENDEUR INVALIDE",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -204,7 +204,7 @@ class _HomeState extends State<Home> {
                         )
                       ],
                     ),
-                    SizedBox(width: 5.0),
+                    SizedBox(width: 35.0),
                     Container(
                       height: 40.0,
                       width: 50.0,
@@ -226,7 +226,7 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-          SizedBox(height: 40.0),
+          SizedBox(height: 50.0),
           Container(
             padding: EdgeInsets.only(left: 25.0, right: 25.0),
             child: Row(
@@ -234,17 +234,43 @@ class _HomeState extends State<Home> {
               children: [
                 Text(
                   "Menu ",
-                  style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w800,
+                  style: GoogleFonts.lato(
+                    color: Color.fromARGB(255, 201, 19, 6),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
                   ),
-                )
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(children: [
+                  Text(
+                    'Connecter : ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    widget.userName.toUpperCase(),
+                    style: GoogleFonts.lato(
+                      color: Color.fromARGB(255, 6, 153, 11),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  )
+                ]),
               ],
             ),
           ),
           SizedBox(
-            height: 10.0,
+            height: 20.0,
           ),
           GridView.count(
             crossAxisCount: 2,
@@ -278,21 +304,28 @@ class _HomeState extends State<Home> {
         color: Colors.white,
         child: Row(children: [
           Text(
-            'Utilisateur : ',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
+            'Powered by ',
+            style: GoogleFonts.poppins(
+              color: Color.fromARGB(255, 201, 19, 6),
+              fontSize: 10,
               fontWeight: FontWeight.w500,
             ),
           ),
           Text(
-            widget.userName.toUpperCase(),
+            'PROFONDEUR AGENCY',
             style: GoogleFonts.poppins(
-              color: Color.fromARGB(255, 197, 21, 8),
-              fontSize: 20,
+              color: Colors.black,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
-          )
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+          Container(
+              height: MediaQuery.of(context).size.height / 15,
+              width: MediaQuery.of(context).size.width / 15,
+              child: Image.asset('assets/pa.jpg'))
         ]),
       ),
     );

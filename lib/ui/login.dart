@@ -279,7 +279,7 @@ class _LoginState extends State<Login> {
         final response = await http
             .post(
                 Uri.parse(
-                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/loginapi"),
+                    "http://parentseleves-rdc.org/zando/public/api/loginapi"),
                 headers: <String, String>{
                   "Content-type": "application/json; chartset=UTF-8"
                 },

@@ -275,7 +275,7 @@ class _UpdateInformationPersonnellePageState
       try {
         final response = await http.get(
             Uri.parse(
-                "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/categories"),
+                "http://parentseleves-rdc.org/zando/public/api/public/api/categories"),
             headers: <String, String>{
               "Content-type": "application/json; chartset=UTF-8"
             }).timeout(const Duration(seconds: 20), onTimeout: () {
@@ -887,9 +887,10 @@ class _UpdateInformationPersonnellePageState
       showSnackbar('Veuillez remplir l\'article Svp !');
     } else if (typePlace == '') {
       showSnackbar('Veuillez selectionner la place Svp !');
-    } else if (typeategorie == '') {
+    } /*else if (typeategorie == '') {
       showSnackbar('Veuillez selectionner la categorie Svp !');
-    } else if (!dateNaiss.isBefore(tgl)) {
+    }*/
+    else if (!dateNaiss.isBefore(tgl)) {
       /*saveInfosPersonnel();
         Navigator.push(
             context,
@@ -1061,7 +1062,7 @@ class _UpdateInformationPersonnellePageState
         print(" ******  debut try modification ****** ");
         //var identif = widget.idVendeur;
         var urls =
-            "https://zando-app.e-entrepreneurdrc.com/zando_api/public/api/personnes/$identifiant";
+            "http://parentseleves-rdc.org/zando/public/api/personnes/$identifiant";
         print(
             " ---------- voila url ------ *******  $urls ******* ---------------------------");
         final response = await http
@@ -1088,6 +1089,7 @@ class _UpdateInformationPersonnellePageState
                   "type_place": place,
                   "adresse": residence,
                   "marche_provisoire": marchePro,
+                  "photo": "jhvkjhcxxjxjy",
                   "article": article
                 }))
             .timeout(const Duration(seconds: 20), onTimeout: () {

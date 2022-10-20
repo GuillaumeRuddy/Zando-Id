@@ -58,20 +58,6 @@ class _SuccessState extends State<SuccessUpdate> {
               height: 30,
             ),
             ButtonWANGI(
-              titre: 'Continuer',
-              color: Colors.red,
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            InformationPersonnellePage(userName: utilisateur)));
-              },
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            ButtonWANGI(
               titre: 'Aller au menu',
               color: Colors.green,
               onPressed: () {

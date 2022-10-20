@@ -38,42 +38,42 @@ class _AcceuilState extends State<Acceuil> {
     _getPreferences();
     Size taille = MediaQuery.of(context).size;
     return Scaffold(
-        drawer: Drawer(
+        /*drawer: Drawer(
           child: DrawerAdd(),
-        ),
+        ),*/
         body: ListView(children: <Widget>[
-          Column(
-            children: <Widget>[
-              SizedBox(
-                  height: taille.height,
-                  child: Stack(
+      Column(
+        children: <Widget>[
+          SizedBox(
+              height: taille.height,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    // margin: EdgeInsets.only(top: taille.height * 0.3),
+                    height: taille.height / 2.5,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        //color: Colors.green,
+                        image: DecorationImage(
+                            image: AssetImage("assets/hv.png"),
+                            fit: BoxFit.contain),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(60.0),
+                          bottomRight: Radius.circular(60.0),
+                        )),
+                  ),
+                  Row(
+                    children: [
+                      Text("Utilisateur connecter: "),
+                      SizedBox(width: 15.0),
+                      Text(utilisateur)
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        // margin: EdgeInsets.only(top: taille.height * 0.3),
-                        height: taille.height / 2.5,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            //color: Colors.green,
-                            image: DecorationImage(
-                                image: AssetImage("assets/hv.png"),
-                                fit: BoxFit.contain),
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(60.0),
-                              bottomRight: Radius.circular(60.0),
-                            )),
-                      ),
-                      Row(
-                        children: [
-                          Text("Utilisateur connecter: "),
-                          SizedBox(width: 15.0),
-                          Text(utilisateur)
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          /*Container(
+                      /*Container(
                         margin: EdgeInsets.all(10.0),
                         alignment: Alignment.topLeft,
                         height: 50.0,
@@ -108,7 +108,7 @@ class _AcceuilState extends State<Acceuil> {
                           ),
                         ],
                       ),*/
-                          /*SizedBox(
+                      /*SizedBox(
                           width: MediaQuery.of(context).size.width - 230.0),
                       Container(
                         //margin: EdgeInsets.only(left: 5.0),
@@ -126,7 +126,7 @@ class _AcceuilState extends State<Acceuil> {
                       SizedBox(height: 15.0)
                     ],
                   ),*/
-                          /*Padding(
+                      /*Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 60.0, horizontal: 110.0),
                               child: Column(
@@ -141,63 +141,60 @@ class _AcceuilState extends State<Acceuil> {
                                   ),*/
                                 ],
                               )),*/
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: taille.height / 3.5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              SizedBox(height: taille.height / 3.5),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            /* MaterialPageRoute(builder: (_) => Info())); */
-                                            MaterialPageRoute(
-                                                builder: (_) =>
-                                                    InformationPersonnellePage(
-                                                        userName:
-                                                            utilisateur)));
-                                      },
-                                      child: CardDetails(
-                                          'Enregistrement', 'assets/hv.png')),
-                                  /*InkWell(
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        /* MaterialPageRoute(builder: (_) => Info())); */
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                InformationPersonnellePage(
+                                                    userName: utilisateur)));
+                                  },
+                                  child: CardDetails(
+                                      'Enregistrement', 'assets/hv.png')),
+                              /*InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) => Cotisation()));
                               },
                               child:
                                   CardDetails('Cotisation', 'assets/paye.png')),*/
-                                ],
-                              ),
-                              SizedBox(height: 20.0),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  InkWell(
-                                      onTap: () {},
-                                      child: CardDetails(
-                                          'Rejeter', 'assets/hv.png')),
-                                  /*InkWell(
+                            ],
+                          ),
+                          SizedBox(height: 20.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              InkWell(
+                                  onTap: () {},
+                                  child:
+                                      CardDetails('Rejeter', 'assets/hv.png')),
+                              /*InkWell(
                               onTap: () {
                                 //UserModel.getUser();
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) => Equipe()));
                               },
                               child: CardDetails('Equipe', 'assets/imana.png')),*/
-                                ],
-                              ),
                             ],
-                          )
+                          ),
                         ],
-                      ),
+                      )
                     ],
-                  ))
-            ],
-          )
-        ]));
+                  ),
+                ],
+              ))
+        ],
+      )
+    ]));
   }
 
   @override

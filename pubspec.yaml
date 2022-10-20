@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.3
   flutter_spinkit: ^5.0.0
-  google_fonts: ^2.1.0
+  google_fonts: ^3.0.1
   spinner: ^1.0.1
   #flutter_spinkit: ^5.0.0
   fluttertoast: ^8.0.7
