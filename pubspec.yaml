@@ -48,6 +48,7 @@ dependencies:
   flutter_dropdown: ^1.0.0+hotfix.1
   flutter_launcher_icons: ^0.10.0
   image_picker: 
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:

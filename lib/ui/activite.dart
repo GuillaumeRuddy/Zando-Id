@@ -33,7 +33,7 @@ class _ActiviteState extends State<Activite> {
 
   var nom, postnom, prenom, sexe, dateNaissance, lieuNaissance;
   var adresse, telephone, nationalite, province, territoire, photo;
-  var agent, etatCiv;
+  var agent, etatCiv, commune;
   var selectedcategorie; //good
   var selectTypeplace; //good
   var utilisateur = "";
@@ -52,6 +52,7 @@ class _ActiviteState extends State<Activite> {
     dateNaissance = prefs.getString('dateNaissance');
     lieuNaissance = prefs.getString('lieuNaissance');
     etatCiv = prefs.getString('etatCivil');
+    commune = prefs.getString('commune');
     adresse = prefs.getString('residence');
     telephone = prefs.getString('telephone');
     nationalite = prefs.getString('nationalite');
@@ -367,6 +368,7 @@ class _ActiviteState extends State<Activite> {
           dateNaissance,
           etatCiv,
           adresse,
+          commune,
           telephone,
           nationalite,
           province,
@@ -390,6 +392,7 @@ class _ActiviteState extends State<Activite> {
       String dateNais,
       String etatcivile,
       String adresse,
+      String commune,
       String telephone,
       String nationalite,
       String province,
@@ -432,6 +435,7 @@ class _ActiviteState extends State<Activite> {
                   "lieu_naissance": lieuNais,
                   "date_naissance": dateNais,
                   "etat_civil": etatcivile,
+                  "commune": commune,
                   "residence": adresse,
                   "telephone": telephone,
                   "nationalite": nationalite,

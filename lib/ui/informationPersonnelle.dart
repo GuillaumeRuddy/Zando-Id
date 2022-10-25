@@ -58,6 +58,50 @@ class _InformationPersonnellePageState
   String photoIdent = "";
   var utilisateur = "";
   String idUser = "";
+  var placeCommune;
+  List<String> listeCommune = [
+    "Bandalungwa",
+    "Barumbu",
+    "Bumbu",
+    "Gombe",
+    "Kalamu",
+    "Kasa-Vubu",
+    "Kimbanseke",
+    "Kinshasa",
+    "Kintambo",
+    "Kisenso",
+    "Lemba",
+    "Limete",
+    "Lingwala",
+    "Makala",
+    "Maluku",
+    "Masina",
+    "Matete",
+    "Mont-Ngafula",
+    "Ndjili",
+    "Ngaba",
+    "Ngaliema",
+    "Ngiri-Ngiri",
+    "Nsele",
+    "Selembao"
+  ];
+
+  List<DropdownMenuItem<String>> listCom = [];
+
+  void commune() {
+    listCom.clear();
+    for (var com in listeCommune) {
+      listCom.add(
+        DropdownMenuItem(
+          value: com,
+          child: Text(
+            com,
+            style: TextStyle(color: Colors.black, fontSize: 15),
+          ),
+        ),
+      );
+    }
+  }
 
   List<DropdownMenuItem<String>> listEtat = [];
 
@@ -137,6 +181,7 @@ class _InformationPersonnellePageState
   @override
   Widget build(BuildContext context) {
     etatCiv();
+    commune();
     return Scaffold(
       appBar: AppBar(
         title: Text("Identité personnelle"),
@@ -368,6 +413,38 @@ class _InformationPersonnellePageState
               SizedBox(
                 height: 10,
               ),
+              // Commune
+              Row(
+                children: [
+                  Text(
+                    "Commune",
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                  DropdownButton(
+                      value: placeCommune,
+                      elevation: 20,
+                      items: listCom,
+                      hint: Text(
+                        'Sélectionnez la commune',
+                        style: TextStyle(color: Colors.black, fontSize: 12),
+                      ),
+                      onChanged: (value) {
+                        placeCommune = value;
+                        setState(() {});
+                      }),
+                ],
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
               // Residence
               TextField(
                 controller: residenceController,
@@ -518,6 +595,8 @@ class _InformationPersonnellePageState
       showSnackbar('Veuillez remplir la ville de naissance Svp !');
     } else if (etatC == '') {
       showSnackbar('Veuillez selectionner l\'etat civil Svp !');
+    } else if (placeCommune == '') {
+      showSnackbar('Veuillez selectionner la commune Svp !');
     } else if (residenceController.text == '') {
       showSnackbar('Veuillez remplir l\'adresse Svp !');
     } else if (provinceController.text == '') {
@@ -649,6 +728,7 @@ class _InformationPersonnellePageState
     prefs.setString('dateNaissance', _datenaissance);
     prefs.setString('lieuNaissance', villeNaissanceController.text);
     prefs.setString('etatCivil', etatC);
+    prefs.setString('commune', placeCommune);
     prefs.setString('residence', residenceController.text);
     prefs.setString('telephone', telephoneController.text);
     prefs.setString('nationalite', nationaliteController.text);
