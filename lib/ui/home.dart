@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
                   "Content-type": "application/json; chartset=UTF-8"
                 },
                 body: jsonEncode(<String, String>{"agent_id": widget.idUser}))
-            .timeout(const Duration(seconds: 15), onTimeout: () {
+            .timeout(const Duration(seconds: 30), onTimeout: () {
           _loading = false;
           snackBar("Delais d'attente depasser, veuillez reessaie plus tard");
           throw TimeoutException(

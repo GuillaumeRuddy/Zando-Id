@@ -444,11 +444,15 @@ class _ActiviteState extends State<Activite> {
                   "adresse": residence,
                   "marche_provisoire": marchePro,
                   "article": article,
-                  "photo": "/9j/4QFwRXhpZgAATU0AKgAAAAgABwEAAAQAAAABAAABLAEQ"
+                  "photo": photo
                 }))
-            .timeout(const Duration(seconds: 20), onTimeout: () {
+            .timeout(const Duration(seconds: 30), onTimeout: () {
           //<----Gestion du time out dans le cas ou sa prend trop de temps
           print(" ******  tozo zela  ****** ");
+          setState(() {
+            //showSnackbar("Vendeur Enregistrer");
+            _loading = false;
+          });
           showSnackbar(
               "Delais d'attente depasser, veuillez reessaie plus tard");
           throw TimeoutException(
@@ -470,7 +474,7 @@ class _ActiviteState extends State<Activite> {
 
             setState(() {
               //showSnackbar("Vendeur Enregistrer");
-              bool _loading = false;
+              _loading = false;
             });
           }
           //ici tu met la redirection en fonction de l'action qui vas suivre...
@@ -478,6 +482,7 @@ class _ActiviteState extends State<Activite> {
           print(response.statusCode);
           var msg = "un Problème se pose dans les informations fournies";
           setState(() {
+            _loading = false;
             showSnackbar(msg);
           });
         }

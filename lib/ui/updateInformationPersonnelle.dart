@@ -356,11 +356,11 @@ class _UpdateInformationPersonnellePageState
   }
 
   @override
-  void initState() {
+  void initState() async {
     // TODO: implement initState
     super.initState();
     _getPreferences();
-    recupCategorie();
+    await recupCategorie();
     miseDonne();
   }
 

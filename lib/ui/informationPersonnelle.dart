@@ -454,7 +454,7 @@ class _InformationPersonnellePageState
               Text(
                 "Veuillez prendre une photo de vous sur fond blanc en format passeport",
                 style: GoogleFonts.poppins(
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 14, 191, 20),
                   fontSize: 13,
                   fontWeight: FontWeight.normal,
                 ),
@@ -545,7 +545,7 @@ class _InformationPersonnellePageState
   //capture
   capturePhoto(ImageSource source) async {
     final imagePath = await ImagePicker()
-        .getImage(source: source, maxWidth: 400, maxHeight: 400);
+        .getImage(source: source, maxWidth: 500, maxHeight: 500);
     if (imagePath != null) {
       setState(() {
         image_file = File(imagePath.path);
