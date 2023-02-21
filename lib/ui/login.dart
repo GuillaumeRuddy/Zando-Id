@@ -88,50 +88,43 @@ class _LoginState extends State<Login> {
                                   fontWeight: FontWeight.bold,
                                 ))),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: TextField(
-                                autofocus: true,
-                                controller: userController,
-                                keyboardType: TextInputType.text,
-                                textAlignVertical: TextAlignVertical.bottom,
-                                //maxLength: 9,
-                                onChanged: (value) {
-                                  setState(() {
-                                    counterText = value.length.toString();
-                                  });
+                        TextField(
+                          autofocus: true,
+                          controller: userController,
+                          keyboardType: TextInputType.text,
+                          textAlignVertical: TextAlignVertical.bottom,
+                          //maxLength: 9,
+                          onChanged: (value) {
+                            setState(() {
+                              counterText = value.length.toString();
+                            });
 
-                                  if (value.length > 3) {
-                                    setState(() {
-                                      valid = true;
-                                    });
-                                  } else {
-                                    valid = false;
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(
-                                        bottom: 10, top: 22, left: 10),
-                                    //counterText: '$counterText/09',
-                                    counterStyle: TextStyle(fontSize: 10),
-                                    labelText: 'Utilisateur',
-                                    hintText: 'Entrez le nom d\'utilisateur',
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(
-                                            color: Colors.blue, width: 1)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.blue, width: 1)),
-                                    hintStyle: TextStyle(
-                                        fontSize: 10, color: Colors.grey)),
-                              ),
-                            ),
-                          ],
+                            if (value.length > 3) {
+                              setState(() {
+                                valid = true;
+                              });
+                            } else {
+                              valid = false;
+                            }
+                          },
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  bottom: 10, top: 22, left: 10),
+                              //counterText: '$counterText/09',
+                              counterStyle: TextStyle(fontSize: 10),
+                              labelText: 'Utilisateur',
+                              hintText: 'Entrez le nom d\'utilisateur',
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                      BorderSide(color: Colors.blue, width: 1)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.blue, width: 1)),
+                              hintStyle:
+                                  TextStyle(fontSize: 10, color: Colors.grey)),
                         ),
                         SizedBox(
                           height: 12,
@@ -186,13 +179,87 @@ class _LoginState extends State<Login> {
                               hintStyle:
                                   TextStyle(fontSize: 10, color: Colors.grey)),
                         ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(12.0),
+                          //ce bouton fonctionne uniquement si le numero est valid
+                          child: AbsorbPointer(
+                            absorbing: valid == true ? false : true,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                //Prend la couleur bleu si numero valid sinon grise
+                                primary: valid == true && validPassword == true
+                                    ? Colors.green[700]
+                                    : Colors.grey,
+                              ),
+                              onPressed: () {
+                                mdp = passwordController.text;
+                                user = userController.text;
+
+                                loger(user, mdp);
+
+                                /*Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home(
+                                              userName: user,
+                                              idUser: "1",
+                                            )));*/
+
+                                /*Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => InformationPersonnellePage())); */
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: Text(
+                                  "Se Connecter",
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
               bottomNavigationBar: SafeArea(
-                child: Padding(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(
+                    'Powered by ',
+                    style: GoogleFonts.poppins(
+                      color: Color.fromARGB(255, 201, 19, 6),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    'PROFONDEUR AGENCY',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Container(
+                      height: MediaQuery.of(context).size.height / 15,
+                      width: MediaQuery.of(context).size.width / 15,
+                      child: Image.asset('assets/pa.jpg'))
+                ]),
+                /*child: Padding(
                   padding: EdgeInsets.all(12.0),
                   //ce bouton fonctionne uniquement si le numero est valid
                   child: AbsorbPointer(
@@ -236,7 +303,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
               ),
             ),
           );
@@ -277,9 +344,7 @@ class _LoginState extends State<Login> {
       try {
         print(" ******  debut try   ****** ");
         final response = await http
-            .post(
-                Uri.parse(
-                    "http://parentseleves-rdc.org/zando/public/api/loginapi"),
+            .post(Uri.parse("https://ageas-cenco.com/zd/public/api/loginapi"),
                 headers: <String, String>{
                   "Content-type": "application/json; chartset=UTF-8"
                 },

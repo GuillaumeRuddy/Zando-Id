@@ -59,8 +59,7 @@ class _HomeState extends State<Home> {
       try {
         final reponse = await http
             .post(
-                Uri.parse(
-                    "http://zando-app.e-entrepreneurdrc.com/zando_api/public/api/rejeter"),
+                Uri.parse("https://ageas-cenco.com/zd/public/api/api/rejeter"),
                 headers: <String, String>{
                   "Content-type": "application/json; chartset=UTF-8"
                 },
@@ -145,7 +144,13 @@ class _HomeState extends State<Home> {
       /*resizeToAvoidBottomInset: false,
         backgroundColor: Color.fromARGB(255, 247, 244, 244),*/
       appBar: AppBar(
-        title: Text("Zando Id"),
+        title: Text(
+          "Zando Id",
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1!
+              .copyWith(fontWeight: FontWeight.w700, color: Colors.white),
+        ),
       ),
       drawer: Drawer(
         child: DrawerAdd(userName: widget.userName, idUser: widget.idUser),
@@ -161,11 +166,11 @@ class _HomeState extends State<Home> {
                   color: Colors.white,
                   child: Text(
                     "TABLEAU DE BORD",
-                    style: GoogleFonts.poppins(
-                      color: Color.fromARGB(255, 201, 19, 6),
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 28,
+                          color: Colors.black,
+                        ),
                   )),
               Container(
                 margin: EdgeInsets.fromLTRB(40.0, 80.0, 40.0, 0.0),
@@ -196,10 +201,12 @@ class _HomeState extends State<Home> {
                           padding: EdgeInsets.all(25.0),
                           child: Text(
                             "VENDEUR INVALIDE",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15.0),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white),
                           ),
                         )
                       ],
@@ -302,7 +309,7 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(left: 10.0),
         color: Colors.white,
-        child: Row(children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(
             'Powered by ',
             style: GoogleFonts.poppins(

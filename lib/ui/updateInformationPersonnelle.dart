@@ -249,7 +249,7 @@ class _UpdateInformationPersonnellePageState
         style: TextStyle(fontSize: 15),
       ),
     );
-    key.currentState?.showSnackBar(snackbar);
+    //key.currentState?.showSnackBar(snackbar);
   }
 
   void toast(String msag) {

@@ -9,11 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:zando_id/model/categorie.dart';
-import 'package:zando_id/ui/success.dart';
+import 'package:zando_id/ui/Photo.dart';
 import 'package:zando_id/widgets/ButtonWANGI.dart';
 import 'package:zando_id/widgets/loading.dart';
-
-import 'informationPersonnelle.dart';
 
 //import 'package:image/image.dart' as ImageProcess;
 
@@ -29,7 +27,8 @@ class _ActiviteState extends State<Activite> {
   bool _loading = false;
   TextEditingController adresseController = TextEditingController(); //good
   TextEditingController marcheController = TextEditingController(); //good
-  TextEditingController articleController = TextEditingController(); //good
+  TextEditingController articleController = TextEditingController();
+  TextEditingController positionController = TextEditingController(); //good
 
   var nom, postnom, prenom, sexe, dateNaissance, lieuNaissance;
   var adresse, telephone, nationalite, province, territoire, photo;
@@ -39,6 +38,7 @@ class _ActiviteState extends State<Activite> {
   var utilisateur = "";
   var typePlace = null, typeategorie = null;
   var categorieRecup;
+  var localisation;
 
   Future getInfosPersonnel() async {
     print('############## Inside getpref #################');
@@ -61,6 +61,16 @@ class _ActiviteState extends State<Activite> {
     photo = prefs.getString('photoIdent');
     agent = prefs.getString('id_user');
   }
+
+  /*Future getLocation() async {
+    var firstLocalisation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    var lastLocalisation = await Geolocator.getLastKnownPosition();
+    setState(() {
+      localisation = firstLocalisation;
+      positionController.text = localisation;
+    });
+  }*/
 
   GlobalKey<ScaffoldState> key = GlobalKey();
 
@@ -126,7 +136,7 @@ class _ActiviteState extends State<Activite> {
         style: TextStyle(fontSize: 15),
       ),
     );
-    key.currentState?.showSnackBar(snackbar);
+    //key.currentState?.showSnackBar(snackbar);
   }
 
   void toast(String msag) {
@@ -329,15 +339,64 @@ class _ActiviteState extends State<Activite> {
                     ),
 
                     SizedBox(
+                      height: 20,
+                    ),
+
+                    //positionnement
+                    /*Row(
+                      children: [
+                        Text(
+                          "Position",
+                          style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        TextField(
+                          controller: positionController,
+                          decoration: InputDecoration(
+                              hintText: 'position',
+                              labelText: 'position',
+                              hintStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide:
+                                      BorderSide(color: Colors.blue, width: 1)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 1))),
+                        ),
+                        /*FlatButton(
+                            onPressed: () {
+                              getLocation();
+                            },
+                            child: Icon(
+                              Icons.location_on_sharp,
+                              size: 46.0,
+                              color: Colors.blue,
+                            ))*/
+                      ],
+                    ),*/
+
+                    SizedBox(
                       height: 30,
                     ),
 
                     // Bouton de validation
                     ButtonWANGI(
-                      titre: 'Enregistrer',
+                      titre: 'Suivant',
                       color: Colors.green,
                       onPressed: () {
-                        authentificaion(context);
+                        saveInfosPersonnel();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    Photo(user: utilisateur)));
                       },
                     ),
                   ],
@@ -347,7 +406,10 @@ class _ActiviteState extends State<Activite> {
           );
   }
 
-  void authentificaion(context) {
+  //Sauvegarde dans le préférence
+  Future saveInfosPersonnel() async {
+    print('############## Inside savepref 22222 #################');
+
     if (adresseController.text == '') {
       showSnackbar('Veuillez remplir l\'adresse svp !');
     } else if (marcheController.text == '') {
@@ -359,157 +421,14 @@ class _ActiviteState extends State<Activite> {
     } else if (typeategorie == '') {
       showSnackbar('Veuillez selectionner la categorie Svp !');
     } else {
-      enregistrement(
-          nom,
-          postnom,
-          prenom,
-          sexe,
-          lieuNaissance,
-          dateNaissance,
-          etatCiv,
-          adresse,
-          commune,
-          telephone,
-          nationalite,
-          province,
-          territoire,
-          agent,
-          adresseController.text,
-          marcheController.text,
-          articleController.text,
-          typePlace,
-          typeategorie,
-          photo);
-    }
-  }
-
-  Future enregistrement(
-      String nom,
-      String postnom,
-      String prenom,
-      String sexe,
-      String lieuNais,
-      String dateNais,
-      String etatcivile,
-      String adresse,
-      String commune,
-      String telephone,
-      String nationalite,
-      String province,
-      String territoire,
-      String agent,
-      String residence,
-      String marchePro,
-      String article,
-      String place,
-      String categorie,
-      String photo) async {
-    //Debut Test de connection, pour voir si l'utilisateur est connecter
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    print(" ******  Nous sommes dans le check internet   ****** ");
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
-      //S'il est connecter on vas; vers l'API ici...
-      setState(() {
-        _loading = true;
-      });
-      try {
-        print(" ******  debut try   ****** ");
-        print(" ******  debut Photo  ****** ");
-        print(photo);
-        print(" ******  fin photo  ****** ");
-        print(
-            "**** nom: $nom ***** postnom: $postnom ***** prenom: $prenom **** sexe: $sexe **** lieuNais: $lieuNaissance **** date: $dateNais **** etatciv: $etatcivile **** residence: $adresse **** telephone: $telephone **** nationalite: $nationalite **** province: $province **** categorie : $categorie **** agent id: $agent **** place: $place **** adresse : $residence **** marcheprov: $marchePro **** article: $article **** ");
-        final response = await http
-            .post(
-                Uri.parse(
-                    "http://parentseleves-rdc.org/zando/public/api/personnes"),
-                headers: <String, String>{
-                  "Content-type": "application/json; chartset=UTF-8"
-                },
-                body: jsonEncode(<String, String>{
-                  "nom": nom,
-                  "postnom": postnom,
-                  "prenom": prenom,
-                  "sexe": sexe,
-                  "lieu_naissance": lieuNais,
-                  "date_naissance": dateNais,
-                  "etat_civil": etatcivile,
-                  "commune": commune,
-                  "residence": adresse,
-                  "telephone": telephone,
-                  "nationalite": nationalite,
-                  "province": province,
-                  "territoire": territoire,
-                  "categorie_id": categorie,
-                  "agent_id": agent,
-                  "position": "128'89 087'474",
-                  "type_place": place,
-                  "adresse": residence,
-                  "marche_provisoire": marchePro,
-                  "article": article,
-                  "photo": photo
-                }))
-            .timeout(const Duration(seconds: 30), onTimeout: () {
-          //<----Gestion du time out dans le cas ou sa prend trop de temps
-          print(" ******  tozo zela  ****** ");
-          setState(() {
-            //showSnackbar("Vendeur Enregistrer");
-            _loading = false;
-          });
-          showSnackbar(
-              "Delais d'attente depasser, veuillez reessaie plus tard");
-          throw TimeoutException(
-              'The connection has timed out, Please try again!');
-        });
-        print(" ******  response  ****** ");
-        if (response.statusCode == 200) {
-          print(" ******  200  ****** ");
-          //<------ Teste si la requette vers l'API marche
-          var data = jsonDecode(response
-              .body); //<---- recuperation des données qui sont en format JSON
-          print("les datas que recupere *********** " + data.toString());
-
-          var retour = data["status"];
-          if (retour == "success") {
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => Success()));
-
-            setState(() {
-              //showSnackbar("Vendeur Enregistrer");
-              _loading = false;
-            });
-          }
-          //ici tu met la redirection en fonction de l'action qui vas suivre...
-        } else {
-          print(response.statusCode);
-          var msg = "un Problème se pose dans les informations fournies";
-          setState(() {
-            _loading = false;
-            showSnackbar(msg);
-          });
-        }
-      } on SocketException {
-        setState(() {
-          showSnackbar(
-              "Nous rencontrons un problème, veuillez réessaie ulterieuement");
-        });
-      } on TimeoutException {
-        setState(() {
-          showSnackbar("Delais d'attente dépasser");
-        });
-      } catch (e) {
-        print("erreur: $e");
-        setState(() {
-          showSnackbar("Nous rencontrons un problème $e");
-        });
-      }
-    } else {
-      setState(() {
-        toast("Impossible de se connecter à internet");
-      });
-    }
+      // debut sauvegarde données
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('adresseVente', adresseController.text);
+      prefs.setString('marchProv', marcheController.text);
+      prefs.setString('article', articleController.text);
+      prefs.setString('typePlace', typePlace);
+      prefs.setString('typeCateg', typeategorie);
+    } //fin savepref
   }
 
   Future recupCategorie() async {
@@ -565,6 +484,7 @@ class _ActiviteState extends State<Activite> {
               /*setState(() {
                 listCat.add(Categorie.fromJson(catg));
               });*/
+              setState(() {});
             }
             print("###### les categories recuperes en objets ######");
             print(listCat);

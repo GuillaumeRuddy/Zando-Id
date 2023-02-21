@@ -35,8 +35,6 @@ class _InformationPersonnellePageState
   TextEditingController provinceController = TextEditingController();
   TextEditingController territoireController = TextEditingController();
 
-  //GlobalKey<ScaffoldState> cle = GlobalKey();
-
   DateTime tgl = new DateTime.now();
   late DateTime dateNaiss;
   DateTime _selectedDate = DateTime.now();
@@ -45,7 +43,7 @@ class _InformationPersonnellePageState
 
   String maDateNaissance = 'Appuyez ici'; //good, celle utiliser
   String _datenaissance = ""; //good
-  var image_file; //good
+  //good
   String nom = "", postnom = "", prenom = "";
   // String adresse2, email, numeroCarte, nmbreEnfant, region;
   String groupValue = ""; //good
@@ -162,7 +160,7 @@ class _InformationPersonnellePageState
         style: TextStyle(fontSize: 15),
       ),
     );
-    key.currentState?.showSnackBar(snackbar);
+    //key.currentState?.showSnackBar(snackbar);
   }
 
   Future _getPreferences() async {
@@ -527,44 +525,7 @@ class _InformationPersonnellePageState
               SizedBox(
                 height: 25,
               ),
-              //prendre une photo
-              Text(
-                "Veuillez prendre une photo de vous sur fond blanc en format passeport",
-                style: GoogleFonts.poppins(
-                  color: Color.fromARGB(255, 14, 191, 20),
-                  fontSize: 13,
-                  fontWeight: FontWeight.normal,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Card(
-                elevation: 1,
-                child: Container(
-                  child: image_file == null
-                      ? Image.asset("assets/visage.png", fit: BoxFit.fill)
-                      : Image.file(
-                          image_file,
-                          fit: BoxFit.contain,
-                        ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blueAccent,
-                  ),
-                  onPressed: () {
-                    menuContextuel(context);
-                  },
-                  child: Text("Prendre une photo")),
-              SizedBox(
-                height: 40,
-              ),
+
               // Bouton de validation
               ButtonWANGI(
                 titre: 'SUIVANT',
@@ -605,11 +566,11 @@ class _InformationPersonnellePageState
       showSnackbar('Veuillez remplir le territoire Svp !');
     } else if (groupValue == '') {
       showSnackbar('Veuillez choisir le sexe Svp !');
-    } else if (photoIdent == '') {
-      showSnackbar('Veuillez ajouter une photo Svp !');
     } else {
       //seconde page
       if (dateNaiss.isBefore(tgl)) {
+        print(" ######### la commune selectionner est: ######### " +
+            placeCommune);
         saveInfosPersonnel();
         Navigator.push(
             context,
@@ -619,75 +580,6 @@ class _InformationPersonnellePageState
         showSnackbar("veuillez renseigner une bonne date");
       }
     }
-  }
-
-  //capture
-  capturePhoto(ImageSource source) async {
-    final imagePath = await ImagePicker()
-        .getImage(source: source, maxWidth: 500, maxHeight: 500);
-    if (imagePath != null) {
-      setState(() {
-        image_file = File(imagePath.path);
-        File photo = File(imagePath.path);
-        photoIdent = base64Encode(photo.readAsBytesSync());
-        print(
-            ' ###### la phot convertie lors de la capture :  ########  *****   ' +
-                photoIdent);
-        //sauvegarde de l'image
-        //stockage dans préférence
-        //Utile.saveImagePreference("TS",Utile.imageBase64(image_file));
-      });
-    }
-  }
-
-  //button sheet   ---- pour la photo ----
-  menuContextuel(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext ctxt) {
-          return Wrap(
-            children: [
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Prendre une photo",
-                      style: GoogleFonts.poppins(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                    Divider(
-                      height: 2,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.camera_alt_outlined),
-                      title: Text(
-                        "Caméra",
-                        style: GoogleFonts.poppins(
-                            fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        capturePhoto(ImageSource.camera);
-                      },
-                    ),
-                    ListTile(
-                        leading: Icon(Icons.camera_alt_outlined),
-                        title: Text(
-                          "Gallery",
-                          style: GoogleFonts.poppins(
-                              fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          capturePhoto(ImageSource.gallery);
-                        }),
-                  ],
-                ),
-              )
-            ],
-          );
-        });
   }
 
   //calendrier
@@ -734,7 +626,6 @@ class _InformationPersonnellePageState
     prefs.setString('nationalite', nationaliteController.text);
     prefs.setString('province', provinceController.text);
     prefs.setString('territoire', territoireController.text);
-    prefs.setString('photoIdent', photoIdent);
   } //fin savepref
 
 }
